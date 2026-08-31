@@ -8,13 +8,13 @@ terraform {
   }
 
   # Remote state storage in S3
-  backend "s3" {
-    bucket         = "dream-vacations-terraform-state"
-    key            = "prod/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    dynamodb_table = "terraform-locks"
-  }
+ backend "s3" {
+  key            = "capstone/terraform.tfstate"
+  dynamodb_table = "terraform-locks"
+  encrypt        = true
+}
+
+
 }
 
 # AWS Provider Configuration

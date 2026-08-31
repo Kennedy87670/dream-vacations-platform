@@ -182,7 +182,7 @@ resource "aws_instance" "app" {
     delete_on_termination = true
   }
 
-  user_data = base64encode(file("${path.module}/user_data.sh"))
+  user_data = base64encode(replace(file("${path.module}/user_data.sh"), "SSH_PUBLIC_KEY_PLACEHOLDER", var.ec2_public_key))
 
   tags = {
     Name = "${var.app_name}-instance"
