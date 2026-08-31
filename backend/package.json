@@ -4,7 +4,9 @@
     "description": "Backend for Dream Vacation Destinations app",
     "main": "server.js",
     "scripts": {
+        "lint": "node --check server.js",
         "start": "node server.js",
+        "test": "node --test test/*.test.js",
         "dev": "nodemon server.js"
     },
     "dependencies": {
