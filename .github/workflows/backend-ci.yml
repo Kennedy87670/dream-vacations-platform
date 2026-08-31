@@ -24,7 +24,11 @@ jobs:
 
       - name: Run linter
         working-directory: ./backend
-        run: npm run lint 2>/dev/null || echo "No lint script"
+        run: npm run lint
+
+      - name: Run tests
+        working-directory: ./backend
+        run: npm test
 
       - name: Build Docker image
         run: docker build -t dream-vacations-backend:test ./backend

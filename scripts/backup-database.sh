@@ -10,6 +10,7 @@ BACKUP_DIR="./backups"
 DB_NAME="${DB_NAME:-dream_vacations_db}"
 DB_USER="${DB_USER:-dreamvacations}"
 DB_HOST="${DB_HOST:-localhost}"
+DB_PASSWORD="${DB_PASSWORD:-}"
 RETENTION_DAYS=7
 
 echo "💾 Starting database backup..."
@@ -32,8 +33,6 @@ fi
 
 # Create backup
 echo "💾 Creating backup: $BACKUP_FILE"
-PGPASSWORD="$DB_PASSWORD" pg_dump -h "$DB_HOST" -U "$DB_USER" "$DB_NAME" | gzip > "$BACKUP_FILE"
-
 if PGPASSWORD="$DB_PASSWORD" pg_dump -h "$DB_HOST" -U "$DB_USER" "$DB_NAME" | gzip > "$BACKUP_FILE"; then
     echo "✅ Backup created successfully"
 
