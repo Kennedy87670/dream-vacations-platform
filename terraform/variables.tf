@@ -5,6 +5,13 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+# Application name
+variable "app_name" {
+  description = "Application name"
+  type        = string
+  default     = "dream-vacations"
+}
+
 # Environment
 variable "environment" {
   description = "Environment name (dev, staging, prod)"
@@ -12,11 +19,18 @@ variable "environment" {
   default     = "dev"
 }
 
-# Application name
-variable "app_name" {
-  description = "Application name"
+# EC2 Configuration
+variable "instance_type" {
+  description = "EC2 instance type"
   type        = string
-  default     = "dream-vacations"
+  default     = "t3.micro"
+}
+
+# EC2 SSH Public Key
+variable "ec2_public_key" {
+  description = "Public SSH key for EC2. Set with TF_VAR_ec2_public_key"
+  type        = string
+  sensitive   = true
 }
 
 # VPC Configuration
@@ -39,48 +53,9 @@ variable "private_subnet_cidr" {
   default     = "10.0.2.0/24"
 }
 
-# EC2 Configuration
-variable "instance_type" {
-  description = "EC2 instance type"
-  type        = string
-  default     = "t3.medium"
-}
-
-# Domain Configuration
+# Domain Configuration (optional)
 variable "domain_name" {
-  description = "Domain name for the application"
+  description = "Domain name for the application (optional)"
   type        = string
   default     = ""
-}
-
-# Database Configuration
-variable "db_name" {
-  description = "Database name"
-  type        = string
-  default     = "dream_vacations_db"
-}
-
-variable "db_username" {
-  description = "Database username"
-  type        = string
-  default     = "dreamvacations"
-  sensitive   = true
-}
-
-variable "db_password" {
-  description = "Database password"
-  type        = string
-  sensitive   = true
-}
-
-# Docker Hub Configuration
-variable "docker_username" {
-  description = "Docker Hub username"
-  type        = string
-}
-
-variable "docker_token" {
-  description = "Docker Hub access token"
-  type        = string
-  sensitive   = true
 }
