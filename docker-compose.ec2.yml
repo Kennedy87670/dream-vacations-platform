@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: dream-vacations-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-dreamvacations}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secure-password}
+      POSTGRES_DB: ${DB_NAME:-dream_vacations_db}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dreamvacations}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dream-vacations-backend
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-dreamvacations}
+      DB_PASSWORD: ${DB_PASSWORD:-secure-password}
+      DB_NAME: ${DB_NAME:-dream_vacations_db}
+      DATABASE_URL: postgresql://${DB_USER:-dreamvacations}:${DB_PASSWORD:-secure-password}@db:5432/${DB_NAME:-dream_vacations_db}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dream-vacations-frontend
+    ports:
+      - "80:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  db_data:
